@@ -1,0 +1,11 @@
+const { QueryTypes } = require('@sequelize/core');
+const sequelize = require('../config/database');
+
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await sequelize.query("SELECT * FROM Usuarios", { type: QueryTypes.SELECT });
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
