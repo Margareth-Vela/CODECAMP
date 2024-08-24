@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const productController = require('../controllers/productController');
 const catProductController = require('../controllers/catProductController');
+const statesController = require('../controllers/statesController');
 
 // ***********************************************************************
 //                     ENDPOINTS PRODUCTOS
@@ -21,9 +22,9 @@ router.put('/CatProducts/update/:idCategoriaProductos', catProductController.upd
 // ***********************************************************************
 //                     ENDPOINTS ESTADOS
 // ***********************************************************************
-//router.get('/products', productController.getAllProducts);
-router.post('/states/create', productController.createProduct);
-router.put('/states/update/:idEstados', productController.updateProduct);
+router.get('/states', statesController.getAllStates);
+router.post('/states/create', statesController.createEstado);
+router.put('/states/update/:idEstados', statesController.updateEstado);
 
 // ***********************************************************************
 //                     ENDPOINTS USUARIOS
