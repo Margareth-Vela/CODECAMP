@@ -6,7 +6,7 @@ const sequelize = require('./config/database.js');
 const app = express();
 app.use(express.json());
 
-app.use('/api', routes);
+app.use('/', routes);
 
 const port = process.env.PORT || 3000;
 
