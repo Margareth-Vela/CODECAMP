@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const sequelize = require('../config/database');
+const sequelize = require('../config/database.js');
 
 // Ruta para leer una categoria de producto
 exports.getAllCategories = async (req, res) => {

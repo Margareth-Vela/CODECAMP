@@ -1,5 +1,5 @@
-const sequelize = require('../config/database');
-const { generateToken } = require('../config/auth');
+const sequelize = require('../config/database.js');
+const { generateToken } = require('../config/auth.js');
 const bcrypt = require('bcryptjs');
 
 // Ruta para leer usuarios  

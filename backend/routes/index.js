@@ -1,10 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
-const productController = require('../controllers/productController');
-const catProductController = require('../controllers/catProductController');
-const statesController = require('../controllers/statesController');
-const { authenticateToken } = require('../config/auth');
+const userController = require('../controllers/userController.js');
+const productController = require('../controllers/productController.js');
+const catProductController = require('../controllers/catProductController.js');
+const statesController = require('../controllers/statesController.js');
+const ordenController = require('../controllers/ordenController.js');
+const { authenticateToken } = require('../config/auth.js');
 
 // ***********************************************************************
 //                     ENDPOINTS MAIN
@@ -43,5 +44,13 @@ router.put('/states/update/:idEstados', statesController.updateEstado);
 // ***********************************************************************
 router.get('/users', userController.getAllUsers);
 router.put('/users/update/:idUsuarios', userController.updateUser);
+
+// ***********************************************************************
+//                  ENDPOINTS ORDENES/DETALLES
+// ***********************************************************************
+router.get('/orden', ordenController.getAllOrdenes);
+router.get('/orden/:idUsuarios', ordenController.getOrdenUser);
+router.post('/orden/create', ordenController.createOrder);
+router.put('/orden/update/:idOrden', ordenController.updateOrder);
 
 module.exports = router;
