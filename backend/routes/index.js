@@ -18,7 +18,7 @@ router.post('/users/create', userController.createUser);
 //                     ENDPOINTS AUTENTICACION 
 // ***********************************************************************
 router.use(authenticateToken); // Todas las rutas siguientes requieren autenticación
-
+router.post('/logout', userController.logoutUser);
 // ***********************************************************************
 //                     ENDPOINTS PRODUCTOS
 // ***********************************************************************

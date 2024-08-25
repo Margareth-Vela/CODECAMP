@@ -102,3 +102,24 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ error: 'Error al intentar iniciar sesión.' });
     }
 };
+
+// Ruta para leer un usuario LOGOUT
+exports.logoutUser = async (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) return res.status(400).json({ message: 'Token no proporcionado' });
+  
+    try {
+      // Agregar el token a la lista negra en la base de datos
+      await sequelize.query(`
+        INSERT INTO RevokedTokens (token)
+        VALUES (:token)
+      `, {
+        replacements: { token }
+      });
+  
+      res.status(200).json({ message: 'Logout exitoso' });
+    } catch (error) {
+      console.error('Error al realizar logout:', error);
+      res.status(500).json({ message: 'Error en el logout' });
+    }
+  };
