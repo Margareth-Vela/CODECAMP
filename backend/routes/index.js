@@ -4,11 +4,23 @@ const userController = require('../controllers/userController');
 const productController = require('../controllers/productController');
 const catProductController = require('../controllers/catProductController');
 const statesController = require('../controllers/statesController');
+const { authenticateToken } = require('../config/auth');
+
+// ***********************************************************************
+//                     ENDPOINTS MAIN
+// ***********************************************************************
+router.get('/products', productController.getAllProducts);
+router.post('/login', userController.loginUser);
+router.post('/users/create', userController.createUser);
+
+// ***********************************************************************
+//                     ENDPOINTS AUTENTICACION 
+// ***********************************************************************
+//router.use(authenticateToken); // Todas las rutas siguientes requieren autenticación
 
 // ***********************************************************************
 //                     ENDPOINTS PRODUCTOS
 // ***********************************************************************
-router.get('/products', productController.getAllProducts);
 router.post('/products/create', productController.createProduct);
 router.put('/products/update/:idProductos', productController.updateProduct);
 
@@ -29,7 +41,7 @@ router.put('/states/update/:idEstados', statesController.updateEstado);
 // ***********************************************************************
 //                     ENDPOINTS USUARIOS
 // ***********************************************************************
-router.get('/users/select', userController.getAllUsers);
-//router.post('/', userController.createUser);
+router.get('/users', userController.getAllUsers);
+router.put('/users/update/:idUsuarios', userController.updateUser);
 
 module.exports = router;

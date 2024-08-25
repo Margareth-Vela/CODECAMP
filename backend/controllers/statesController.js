@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const sequelize = require('../config/database');
 
-// Ruta para leer los estado
+// Ruta para leer los estados
 exports.getAllStates = async (req, res) => {
     try {
       const users = await sequelize.query("SELECT * FROM VistaEstados");
