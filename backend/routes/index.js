@@ -5,7 +5,7 @@ const productController = require('../controllers/productController.js');
 const catProductController = require('../controllers/catProductController.js');
 const statesController = require('../controllers/statesController.js');
 const ordenController = require('../controllers/ordenController.js');
-const { authenticateToken } = require('../config/auth.js');
+const { authenticateToken, authorizeRole } = require('../config/auth.js');
 
 // ***********************************************************************
 //                     ENDPOINTS MAIN
@@ -17,40 +17,40 @@ router.post('/users/create', userController.createUser);
 // ***********************************************************************
 //                     ENDPOINTS AUTENTICACION 
 // ***********************************************************************
-//router.use(authenticateToken); // Todas las rutas siguientes requieren autenticación
+router.use(authenticateToken); // Todas las rutas siguientes requieren autenticación
 
 // ***********************************************************************
 //                     ENDPOINTS PRODUCTOS
 // ***********************************************************************
-router.post('/products/create', productController.createProduct);
-router.put('/products/update/:idProductos', productController.updateProduct);
+router.post('/products/create', authorizeRole([2]), productController.createProduct);
+router.put('/products/update/:idProductos', authorizeRole([2]), productController.updateProduct);
 
 // ***********************************************************************
 //                     ENDPOINTS CATEGORIA PRODUCTOS
 // ***********************************************************************
-router.get('/CatProducts', catProductController.getAllCategories);
-router.post('/CatProducts/create', catProductController.createCategory);
-router.put('/CatProducts/update/:idCategoriaProductos', catProductController.updateCategory);
+router.get('/CatProducts', authorizeRole([2]), catProductController.getAllCategories);
+router.post('/CatProducts/create', authorizeRole([2]), catProductController.createCategory);
+router.put('/CatProducts/update/:idCategoriaProductos', authorizeRole([2]), catProductController.updateCategory);
 
 // ***********************************************************************
 //                     ENDPOINTS ESTADOS
 // ***********************************************************************
-router.get('/states', statesController.getAllStates);
-router.post('/states/create', statesController.createEstado);
-router.put('/states/update/:idEstados', statesController.updateEstado);
+router.get('/states', authorizeRole([2]), statesController.getAllStates);
+router.post('/states/create', authorizeRole([2]), statesController.createEstado);
+router.put('/states/update/:idEstados', authorizeRole([2]), statesController.updateEstado);
 
 // ***********************************************************************
 //                     ENDPOINTS USUARIOS
 // ***********************************************************************
-router.get('/users', userController.getAllUsers);
-router.put('/users/update/:idUsuarios', userController.updateUser);
+router.get('/users', authorizeRole([2]), userController.getAllUsers);
+router.put('/users/update/:idUsuarios', authorizeRole([2]), userController.updateUser);
 
 // ***********************************************************************
 //                  ENDPOINTS ORDENES/DETALLES
 // ***********************************************************************
-router.get('/orden', ordenController.getAllOrdenes);
-router.get('/orden/:idUsuarios', ordenController.getOrdenUser);
-router.post('/orden/create', ordenController.createOrder);
-router.put('/orden/update/:idOrden', ordenController.updateOrder);
+router.get('/orden', authorizeRole([2]), ordenController.getAllOrdenes);
+router.get('/orden/:idUsuarios', authorizeRole([1]), ordenController.getOrdenUser);
+router.post('/orden/create', authorizeRole([1]), ordenController.createOrder);
+router.put('/orden/update/:idOrden', authorizeRole([2]), ordenController.updateOrder);
 
 module.exports = router;

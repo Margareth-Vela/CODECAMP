@@ -25,4 +25,14 @@ const authenticateToken = (req, res, next) => {
     });
 };
 
-module.exports = { generateToken, authenticateToken };
+const authorizeRole = (roles) => {
+    
+    return (req, res, next) => {
+        if (!roles.includes(req.user.userRole)) {
+            return res.status(403).json({ message: 'Acceso denegado' });
+        }
+        next();
+    };
+};
+
+module.exports = { generateToken, authenticateToken, authorizeRole };
