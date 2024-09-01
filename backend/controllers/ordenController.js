@@ -24,68 +24,49 @@ exports.getOrdenUser = async (req, res) => {
     }
   };
 
-// Ruta para crear una nueva orden
-exports.createOrder = async (req, res) => {
-    const { idUsuario, direccion, fecha_entrega, detallesOrden } = req.body;
-    const total = 0.00;
+// Ruta para leer una orden 
+exports.getOrderDetails = async (req, res) => {
+    const { idOrden } = req.params;
     try {
-        // Obtener datos del usuario desde la tabla Usuarios
-        const usuario = await sequelize.query(`
-            SELECT Correo, Nombre_completo, telefono FROM Usuarios WHERE idUsuarios = :idUsuario
-        `, {
-            replacements: { idUsuario },
-            type: sequelize.QueryTypes.SELECT
-        });
-
-        
-        // Crear la orden en estado "Confirmado"
-        const [order] = await sequelize.query(`
-            EXEC InsertarOrden @idUsuarios=:idUsuarios, @idEstados=:idEstados, @correo=:correo, @nombre_completo=:nombre_completo, @telefono=:telefono, @direccion=:direccion, @total_orden=:total_orden, @fecha_entrega=:fecha_entrega
-        `, {
-            replacements: { idUsuarios: idUsuario, idEstados : 1, correo: usuario[0].Correo, nombre_completo: usuario[0].Nombre_completo, telefono: usuario[0].telefono, direccion, total_orden : total, fecha_entrega }
-        });
-
-        
-
-        const idOrden = order[0].idOrden;
-        console.log(order);
-        console.log(order[0].idOrden);
-        let totalOrden = 0;
-
-        // Insertar los detalles de la orden con los precios correctos y calcular el subtotal
-        for (let detalle of detallesOrden) {
-            throw new Error("nuevo error de prueba");
-            // Obtener el precio del producto
-            const producto = await sequelize.query(`
-                SELECT precio FROM Productos WHERE idProductos = :idProducto
-            `, {
-                replacements: { idProducto: detalle.idProducto },
+        // Consulta la vista para obtener los detalles de la orden
+        const results = await sequelize.query(
+            'SELECT * FROM OrdenDetallesVista WHERE idOrden = :idOrden',
+            {
+                replacements: { idOrden },
                 type: sequelize.QueryTypes.SELECT
-            });
+            }
+        );
 
-            const precio = producto[0].precio;
-            const cantidad = detalle.cantidad;
-            const subtotal = precio * cantidad; // Calcular el subtotal
-
-            // Sumar el subtotal al total de la orden
-            totalOrden += subtotal;
-
-            await sequelize.query(`
-                EXEC InsertarOrdenDetalles @idOrden=:idOrden, @idProductos=:idProductos, @cantidad=:cantidad, @precio=:precio, @subtotal=:subtotal
-            `, {
-                replacements: { idOrden, idProductos: detalle.idProducto, cantidad, precio, subtotal }
-            });
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Orden no encontrada' });
         }
 
-        // Actualizar la tabla Orden con el total de la orden
-        await sequelize.query(`
-            UPDATE Orden
-            SET total_orden = :totalOrden
-            WHERE idOrden = :idOrden
+        res.status(200).json(results);
+    } catch (err) {
+        console.error('Error al obtener los detalles de la orden:', err);
+        res.status(500).json({ error: err.message });
+    }
+};
+
+// Ruta para crear una nueva orden
+exports.createOrder = async (req, res) => {
+    const {direccion, fecha_entrega, detallesOrden } = req.body;
+    const idUsuarios = req.user.userId;
+    const orderData = {
+        direccion,
+        fecha_entrega,
+        detallesOrden
+    };
+    const orderDataJson = JSON.stringify(orderData);
+    try {
+        // Crear Orden
+        const [result] = await sequelize.query(`
+            EXEC CrearOrden @json=:orderDataJson, @idUsuarios=:idUsuarios
         `, {
-            replacements: { totalOrden, idOrden }
+            replacements: { orderDataJson, idUsuarios }
         });
 
+        const idOrden = result[0].idOrden;
         res.status(201).json({ message: 'Orden creada exitosamente.', idOrden });
     } catch (error) {
         console.error('Error al crear la orden:', error);
