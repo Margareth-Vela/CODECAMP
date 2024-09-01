@@ -54,6 +54,7 @@ exports.createOrder = async (req, res) => {
 
         // Insertar los detalles de la orden con los precios correctos y calcular el subtotal
         for (let detalle of detallesOrden) {
+            throw new Error("nuevo error de prueba");
             // Obtener el precio del producto
             const producto = await sequelize.query(`
                 SELECT precio FROM Productos WHERE idProductos = :idProducto

@@ -5,6 +5,7 @@ const productController = require('../controllers/productController.js');
 const catProductController = require('../controllers/catProductController.js');
 const statesController = require('../controllers/statesController.js');
 const ordenController = require('../controllers/ordenController.js');
+const ROLES = require('../config/roles.js');
 const { authenticateToken, authorizeRole } = require('../config/auth.js');
 
 // ***********************************************************************
@@ -22,35 +23,35 @@ router.post('/logout', userController.logoutUser);
 // ***********************************************************************
 //                     ENDPOINTS PRODUCTOS
 // ***********************************************************************
-router.post('/products/create', authorizeRole([2]), productController.createProduct);
-router.put('/products/update/:idProductos', authorizeRole([2]), productController.updateProduct);
+router.post('/products/create', authorizeRole([ROLES.ADMIN]), productController.createProduct);
+router.put('/products/update/:idProductos', authorizeRole([ROLES.ADMIN]), productController.updateProduct);
 
 // ***********************************************************************
 //                     ENDPOINTS CATEGORIA PRODUCTOS
 // ***********************************************************************
-router.get('/CatProducts', authorizeRole([2]), catProductController.getAllCategories);
-router.post('/CatProducts/create', authorizeRole([2]), catProductController.createCategory);
-router.put('/CatProducts/update/:idCategoriaProductos', authorizeRole([2]), catProductController.updateCategory);
+router.get('/CatProducts', authorizeRole([ROLES.ADMIN]), catProductController.getAllCategories);
+router.post('/CatProducts/create', authorizeRole([ROLES.ADMIN]), catProductController.createCategory);
+router.put('/CatProducts/update/:idCategoriaProductos', authorizeRole([ROLES.ADMIN]), catProductController.updateCategory);
 
 // ***********************************************************************
 //                     ENDPOINTS ESTADOS
 // ***********************************************************************
-router.get('/states', authorizeRole([2]), statesController.getAllStates);
-router.post('/states/create', authorizeRole([2]), statesController.createEstado);
-router.put('/states/update/:idEstados', authorizeRole([2]), statesController.updateEstado);
+router.get('/states', authorizeRole([ROLES.ADMIN]), statesController.getAllStates);
+router.post('/states/create', authorizeRole([ROLES.ADMIN]), statesController.createEstado);
+router.put('/states/update/:idEstados', authorizeRole([ROLES.ADMIN]), statesController.updateEstado);
 
 // ***********************************************************************
 //                     ENDPOINTS USUARIOS
 // ***********************************************************************
-router.get('/users', authorizeRole([2]), userController.getAllUsers);
-router.put('/users/update/:idUsuarios', authorizeRole([2]), userController.updateUser);
+router.get('/users', authorizeRole([ROLES.ADMIN]), userController.getAllUsers);
+router.put('/users/update/:idUsuarios', authorizeRole([ROLES.ADMIN]), userController.updateUser);
 
 // ***********************************************************************
 //                  ENDPOINTS ORDENES/DETALLES
 // ***********************************************************************
-router.get('/orden', authorizeRole([2]), ordenController.getAllOrdenes);
-router.get('/orden/:idUsuarios', authorizeRole([1]), ordenController.getOrdenUser);
-router.post('/orden/create', authorizeRole([1]), ordenController.createOrder);
-router.put('/orden/update/:idOrden', authorizeRole([2]), ordenController.updateOrder);
+router.get('/orden', authorizeRole([ROLES.ADMIN]), ordenController.getAllOrdenes);
+router.get('/orden/:idUsuarios', authorizeRole([ROLES.CLIENT]), ordenController.getOrdenUser);
+router.post('/orden/create', authorizeRole([ROLES.CLIENT]), ordenController.createOrder);
+router.put('/orden/update/:idOrden', authorizeRole([ROLES.ADMIN]), ordenController.updateOrder);
 
 module.exports = router;
