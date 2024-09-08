@@ -22,7 +22,7 @@ exports.createUser = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
 
         await sequelize.query(`
-            EXEC InsertarUsuario @idRol=:idRol, @idEstados=:idEstados, @Correo=:Correo, 
+            EXEC InsertarUsuario @idRol=:idRol, @Correo=:Correo, 
             @Nombre_completo=:Nombre_completo, @password=:password, @telefono=:telefono, @fecha_nacimiento=:fecha_nacimiento
         `, {
             replacements: { idRol, idEstados, Correo, Nombre_completo, password: hashedPassword, telefono, fecha_nacimiento }
