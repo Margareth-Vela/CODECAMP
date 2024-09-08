@@ -1,37 +1,77 @@
-import React, { useState, useContext } from 'react';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useNavigate, Link } from 'react-router-dom';
+import loginSchema from '../validation/loginSchema';
+import { Container, Button, Typography, Box, IconButton } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import { yupResolver } from '@hookform/resolvers/yup';
+import TextFieldController from '../components/TextFieldController';
 import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
-  const handleChange = (e) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
-  };
+  const { handleSubmit, control, formState: { errors } } = useForm({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      Correo: '',
+      password: '',
+    },
+  });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    login(credentials);
+  const onSubmit = async (data) => {
+    try {
+      console.log(data); 
+      await login(data);
+      navigate('/'); 
+    } catch (error) {
+      console.error('Error al iniciar sesión.', error);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={credentials.email}
-        onChange={handleChange}
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        value={credentials.password}
-        onChange={handleChange}
-      />
-      <button type="submit">Login</button>
-    </form>
+    <Container maxWidth="sm">
+      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
+        <Typography variant="h4">Login</Typography>
+        <IconButton onClick={() => navigate('/')}>
+          <HomeIcon fontSize="large" />
+        </IconButton>
+      </Box>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <TextFieldController
+          name="Correo"
+          control={control}
+          label="Correo"
+          type="email"
+          errors={errors}
+        />
+        <TextFieldController
+          name="password"
+          control={control}
+          label="Contraseña"
+          type="password"
+          errors={errors}
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+          Login
+        </Button>
+      </form>
+      <Box mt={2} display="flex" justifyContent="center">
+        <Typography variant="body2">
+          ¿Aún no tienes cuenta?{' '}
+          <Link to="/register" style={{ textDecoration: 'none', color: '#1976d2' }}>
+            Regístrate
+          </Link>
+        </Typography>
+      </Box>
+    </Container>
   );
 };
 

@@ -19,18 +19,30 @@ api.interceptors.request.use((config) => {
 //                        LOGIN
 // ***********************************************************************
 export const login = async (credentials) => {
-    try{
-        const { data } = await api.post('/login', credentials);
+  try {
+    const { data } = await api.post('/login', credentials);
 
-        //Guardar datos de token y usuarios 
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify({ id: data.userId, name: data.userName }));
+    //Guardar datos de token y usuarios 
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('user', JSON.stringify({ id: data.userId, name: data.userName }));
+    console.log(data);
+    return data;
+  } catch (error) {
+    throw error;
+  }
 
-        return data;
-    } catch (error) {
-        throw error; 
-    }
-  
+};
+
+// ***********************************************************************
+//                        LOGOUT
+// ***********************************************************************
+export const logout = async () => {
+  try {
+    await api.post('/logout');
+  } catch (error) {
+    console.error('Logout failed', error);
+    throw error;
+  }
 };
 
 // ***********************************************************************

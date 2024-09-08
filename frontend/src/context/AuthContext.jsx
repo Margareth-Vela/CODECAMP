@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { login as apiLogin, register as apiRegister } from '../api';
+import { login as apiLogin, register as apiRegister, logout as apiLogout } from '../api';
 
 const AuthContext = createContext();
 
@@ -38,7 +38,8 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = async () => {
+    await apiLogout();
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     setToken(null);
