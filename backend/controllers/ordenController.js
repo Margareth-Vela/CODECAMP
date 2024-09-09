@@ -16,7 +16,7 @@ exports.getAllOrdenes = async (req, res) => {
 exports.getOrdenUser = async (req, res) => {
     const { idUsuarios } = req.params;
     try {
-      const users = await sequelize.query(`SELECT * FROM VistaFacturasUsuario where idUsuarios=:idUsuarios`, {replacements: {idUsuarios} ,
+      const users = await sequelize.query(`SELECT * FROM VistaOrdenes where idUsuarios=:idUsuarios`, {replacements: {idUsuarios} ,
         type: sequelize.QueryTypes.SELECT});
       res.status(200).json(users);
     } catch (err) {

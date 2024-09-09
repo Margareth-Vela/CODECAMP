@@ -54,6 +54,6 @@ router.get('/orden', authorizeRole([ROLES.ADMIN]), ordenController.getAllOrdenes
 router.get('/orden/user/:idUsuarios', authorizeRole([ROLES.CLIENT,ROLES.ADMIN]), ordenController.getOrdenUser);
 router.get('/orden/details/:idOrden', authorizeRole([ROLES.CLIENT,ROLES.ADMIN]), ordenController.getOrderDetails);
 router.post('/orden/create', authorizeRole([ROLES.CLIENT]), ordenController.createOrder);
-router.put('/orden/update/:idOrden', authorizeRole([ROLES.ADMIN]), ordenController.updateOrder);
+router.put('/orden/update/:idOrden', authorizeRole([ROLES.CLIENT, ROLES.ADMIN]), ordenController.updateOrder);
 
 module.exports = router;
