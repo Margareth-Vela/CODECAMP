@@ -25,7 +25,6 @@ export const login = async (credentials) => {
     //Guardar datos de token y usuarios 
     localStorage.setItem('token', data.token);
     localStorage.setItem('user', JSON.stringify({ id: data.userId, name: data.userName }));
-    console.log(data);
     return data;
   } catch (error) {
     throw error;
@@ -52,6 +51,21 @@ export const register = async (userInfo) => {
   const { data } = await api.post('/users/create', userInfo);
   return data;
 };
+
+// ***********************************************************************
+//                        ENVIAR ORDEN
+// ***********************************************************************
+export const submitOrder = async (ordenInfo) => {
+  try {
+    const { data } = await api.post('/orden/create', ordenInfo);
+    console.log('Respuesta api', data);
+    return data;
+  } catch (error) {
+    console.error('Error al enviar orden.', error);
+    throw error;
+  }
+};
+
 
 // ***********************************************************************
 //                        OBTENER PRODUCTOS
