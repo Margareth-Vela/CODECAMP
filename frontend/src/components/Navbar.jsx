@@ -48,7 +48,7 @@ const Navbar = () => {
           </Typography>
           {user ? (
             <>
-              <IconButton color="inherit" component={Link} to="/profile">
+              <IconButton color="inherit" component={Link} to="/order">
                 <AccountCircleIcon />
                 <Typography variant="body1" sx={{ marginLeft: 1 }}>
                   {user.name}

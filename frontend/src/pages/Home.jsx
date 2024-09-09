@@ -1,6 +1,7 @@
 //Librerias locales React
 import React, { useContext, useState } from 'react';
 import { Container, Typography, Grid, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 //Contextos
 import ProductContext from '../context/ProductContext';
@@ -17,6 +18,7 @@ const HomePage = () => {
   const { cartItems, addToCart, removeFromCart } = useContext(CartContext);
   const { user } = useContext(AuthContext);
   const [selectedCategory, setSelectedCategory] = useState('Todos');
+  const navigate = useNavigate();
 
   const categories = ['Todos', ...new Set(products.map(product => product.nombreCategoria))];
 
@@ -29,7 +31,7 @@ const HomePage = () => {
     if (user) {
       addToCart(product);
     } else {
-      history.push('/login'); // Redirige a la página de inicio de sesión
+      navigate('/login'); // Redirige a la página de inicio de sesión
     }
   };
 
@@ -37,7 +39,7 @@ const HomePage = () => {
     if (user) {
       removeFromCart(productId);
     } else {
-      history.push('/login'); // Redirige a la página de inicio de sesión
+      navigate('/login'); // Redirige a la página de inicio de sesión
     }
   };
 

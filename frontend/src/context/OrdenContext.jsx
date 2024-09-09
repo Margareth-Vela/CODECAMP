@@ -1,45 +1,54 @@
-import React, { createContext, useState, useEffect } from 'react';
-import { submitOrder as apiOrden } from '../api';
+import React, { createContext, useState } from 'react';
+import { submitOrder as apiOrden, fetchOrderDetails as apiOrderDetails, fetchOrderUser as apiOrderUser, updateOrder as apiUpdate } from '../api';
 
 // Crear el contexto
 export const OrdenContext = createContext();
 
 // Crear el proveedor del contexto
 export const OrdenProvider = ({ children }) => {
-  const [ordenes, setOrdenes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+    const [ordenes, setOrdenes] = useState([]);
+    const [error, setError] = useState(null);
 
-  /*
-  useEffect(() => {
-    // Función para obtener las órdenes desde la API
-    const fetchOrdenes = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get('/api/ordenes');
-        setOrdenes(response.data);
-      } catch (err) {
-        setError(err.message);
-      }
-      setLoading(false);
+    // Función para crear una nueva orden
+    const createOrden = async (nuevaOrden) => {
+        try {
+            const response = await apiOrden(nuevaOrden);
+            setOrdenes((prevOrdenes) => [...prevOrdenes, response.data]);
+        } catch (err) {
+            setError(err.message);
+        }
     };
 
-    fetchOrdenes();
-  }, []);*/
+    const fetchOrders = async (userId) => {
+        try {
+            const data = await apiOrderUser(userId);
+            return data;
+        } catch (error) {
+            setError(error.message);
+        }
+    };
 
-  // Función para crear una nueva orden
-  const createOrden = async (nuevaOrden) => {
-    try {
-      const response = await apiOrden(nuevaOrden);
-      setOrdenes((prevOrdenes) => [...prevOrdenes, response.data]);
-    } catch (err) {
-      setError(err.message);
-    }
-  };
+    const fetchOrderDetails = async (orderId) => {
+        try {
+            const data = await apiOrderDetails(orderId);
+            return data;
+        } catch (error) {
+            setError(error.message);
+        }
+    };
 
-  return (
-    <OrdenContext.Provider value={{ ordenes, loading, error, createOrden }}>
-      {children}
-    </OrdenContext.Provider>
-  );
+    const updateOrder = async (orderId, OrderInfo) => {
+        try {
+            const data = await apiUpdate(orderId, OrderInfo);
+            return data;
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    return (
+        <OrdenContext.Provider value={{ordenes, error, createOrden, fetchOrders, fetchOrderDetails, updateOrder }}>
+            {children}
+        </OrdenContext.Provider>
+    );
 };

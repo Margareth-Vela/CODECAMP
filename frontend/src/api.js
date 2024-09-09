@@ -58,7 +58,6 @@ export const register = async (userInfo) => {
 export const submitOrder = async (ordenInfo) => {
   try {
     const { data } = await api.post('/orden/create', ordenInfo);
-    console.log('Respuesta api', data);
     return data;
   } catch (error) {
     console.error('Error al enviar orden.', error);
@@ -66,6 +65,42 @@ export const submitOrder = async (ordenInfo) => {
   }
 };
 
+// ***********************************************************************
+//                        ACTUALIZAR ORDEN
+// ***********************************************************************
+export const updateOrder = async (orderId, ordenInfo) => {
+  try {
+    await api.put(`/orden/update/${orderId}`, ordenInfo);
+  } catch (error) {
+    console.error('Error al enviar orden.', error);
+    throw error;
+  }
+};
+
+// ***********************************************************************
+//                        OBTENER ORDEN USUARIO
+// ***********************************************************************
+export const fetchOrderUser = async (userId) => {
+  try {
+    const { data } = await api.get(`/orden/user/${userId}`);
+    return data;
+  } catch (error) {
+    console.error('Error al obtener ordenes del usuario.', error);
+    throw error;
+  }
+};
+// ***********************************************************************
+//                        OBTENER ORDEN DETALLES
+// ***********************************************************************
+export const fetchOrderDetails = async (orderId) => {
+  try {
+    const { data } = await api.get(`/orden/details/${orderId}`);
+    return data[0];
+  } catch (error) {
+    console.error('Error al obtener detalles de la orden.', error);
+    throw error;
+  }
+};
 
 // ***********************************************************************
 //                        OBTENER PRODUCTOS
