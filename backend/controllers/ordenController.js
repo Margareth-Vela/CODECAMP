@@ -50,14 +50,18 @@ exports.getOrderDetails = async (req, res) => {
 
 // Ruta para crear una nueva orden
 exports.createOrder = async (req, res) => {
-    const {direccion, fecha_entrega, detallesOrden } = req.body;
+    const {nombre_completo, correo, telefono, direccion, fecha_entrega, detallesOrden } = req.body;
     const idUsuarios = req.user.userId;
     const orderData = {
+        nombre_completo,
+        correo,
+        telefono,
         direccion,
         fecha_entrega,
         detallesOrden
     };
     const orderDataJson = JSON.stringify(orderData);
+
     try {
         // Crear Orden
         const [result] = await sequelize.query(`

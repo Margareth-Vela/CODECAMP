@@ -45,6 +45,7 @@ router.put('/states/update/:idEstados', authorizeRole([ROLES.ADMIN]), statesCont
 // ***********************************************************************
 router.get('/users', authorizeRole([ROLES.ADMIN]), userController.getAllUsers);
 router.put('/users/update/:idUsuarios', authorizeRole([ROLES.ADMIN]), userController.updateUser);
+router.post('/users/oper/create', authorizeRole([ROLES.ADMIN]), userController.createUser);
 
 // ***********************************************************************
 //                  ENDPOINTS ORDENES/DETALLES
