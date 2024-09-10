@@ -13,6 +13,8 @@ api.interceptors.request.use((config) => {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
+}, (error) => {
+  return Promise.reject(error);
 });
 
 // ***********************************************************************
@@ -21,10 +23,9 @@ api.interceptors.request.use((config) => {
 export const login = async (credentials) => {
   try {
     const { data } = await api.post('/login', credentials);
-
     //Guardar datos de token y usuarios 
     localStorage.setItem('token', data.token);
-    localStorage.setItem('user', JSON.stringify({ id: data.userId, name: data.userName }));
+    localStorage.setItem('user', JSON.stringify({ id: data.userId, name: data.userName, rol: data.userRole }));
     return data;
   } catch (error) {
     throw error;

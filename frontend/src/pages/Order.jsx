@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Container, Typography, Divider, IconButton, Box, Grid } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { Container, Typography, Divider, Grid } from '@mui/material';
 
 //Contextos
 import { AuthContext } from '../context/AuthContext';
@@ -9,15 +8,12 @@ import { OrdenContext } from '../context/OrdenContext';
 //Componentes
 import OrderCard from '../components/OrderCard';
 
-//Iconos de la aplicacion
-import { Home as HomeIcon } from '@mui/icons-material';
 
 const OrderPage = () => {
   const { user } = useContext(AuthContext);
   const { fetchOrders } = useContext(OrdenContext);
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -33,23 +29,14 @@ const OrderPage = () => {
   }, [user.id, fetchOrders]);
 
 
-  const handleHomeClick = () => {
-    navigate('/');
-  };
-
   return (
     <Container>
       <Typography variant="h4" component="h1" gutterBottom>
         Bienvenido, {user.name}
       </Typography>
-      <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
         <Typography variant="h5" component="h2">
           Historial de órdenes
         </Typography>
-        <IconButton color="primary" onClick={handleHomeClick}>
-          <HomeIcon />
-        </IconButton>
-      </Box>
       <Divider />
       {orders.length === 0 ? (
         <Typography variant="body1">Aún no hay órdenes.</Typography>

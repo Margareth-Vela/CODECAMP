@@ -15,9 +15,7 @@ import ordenSchema from '../validation/ordenSchema'
 //Componentes
 import TextFieldController from '../components/TextFieldController';
 
-
 //Iconos de la aplicacion 
-import HomeIcon from '@mui/icons-material/Home';
 import CancelIcon from '@mui/icons-material/Cancel';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RemoveShoppingCartIcon from '@mui/icons-material/RemoveShoppingCart';
@@ -37,11 +35,11 @@ const CartPage = () => {
       nombre_completo: user.name || '',
       telefono: '',
       correo: '',
-      direccion:'',
+      direccion: '',
     },
   });
   const [isConfirming, setIsConfirming] = useState(false);
-  
+
 
   //Total del carrito
   const getTotal = () => {
@@ -50,9 +48,6 @@ const CartPage = () => {
   };
 
   //Funciones para botones
-  const handleHomeClick = () => {
-    navigate('/');
-  };
 
   const handleCancelClick = () => {
     clearCart();
@@ -80,22 +75,23 @@ const CartPage = () => {
     navigate('/');
   };
 
-    const getDeliveryDate = () => {
-      const deliveryDate = new Date();
-      deliveryDate.setDate(deliveryDate.getDate() + 10);
-      return deliveryDate.toLocaleDateString();
-    };
+  const getDeliveryDate = () => {
+    const deliveryDate = new Date();
+    deliveryDate.setDate(deliveryDate.getDate() + 10);
+    return deliveryDate.toLocaleDateString();
+  };
 
-    const getDeliveryDateJSON = () => {
-      const deliveryDate = new Date();
-      deliveryDate.setDate(deliveryDate.getDate() + 10);
-      const year = deliveryDate.getFullYear();
-      const month = String(deliveryDate.getMonth() + 1).padStart(2, '0'); 
-      const day = String(deliveryDate.getDate()).padStart(2, '0');
-      return `${year}-${month}-${day}`;
-    };
+  const getDeliveryDateJSON = () => {
+    const deliveryDate = new Date();
+    deliveryDate.setDate(deliveryDate.getDate() + 10);
+    const year = deliveryDate.getFullYear();
+    const month = String(deliveryDate.getMonth() + 1).padStart(2, '0');
+    const day = String(deliveryDate.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
-    return (
+  return (
+    <>
       <Container>
         <Typography variant="h4" component="h1" gutterBottom>
           Carrito de compras
@@ -148,61 +144,58 @@ const CartPage = () => {
 
         {isConfirming && (
           <form onSubmit={handleSubmit(onSubmit)}>
-              <Typography variant="h6" component="h2" gutterBottom>
-                Datos de facturación
-              </Typography>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextFieldController
-                    name="nombre_completo"
-                    control={control}
-                    label="Nombre Completo"
-                    errors={errors}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextFieldController
-                    name="telefono"
-                    control={control}
-                    label="Teléfono"
-                    errors={errors}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextFieldController
-                    name="correo"
-                    control={control}
-                    label="Correo"
-                    errors={errors}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextFieldController
-                    name="direccion"
-                    control={control}
-                    label="Dirección"
-                    errors={errors}
-                  />
-                </Grid>
+            <Typography variant="h6" component="h2" gutterBottom>
+              Datos de facturación
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextFieldController
+                  name="nombre_completo"
+                  control={control}
+                  label="Nombre Completo"
+                  errors={errors}
+                />
               </Grid>
-              <Typography variant="h6" component="h2" gutterBottom style={{ marginTop: '16px' }}>
-                Fecha de entrega estimada: {getDeliveryDate()}
-              </Typography>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                style={{ marginTop: '16px', marginBottom: '16px' }}
-              >
-                Enviar orden
-              </Button>
-            </form>
+              <Grid item xs={12} sm={6}>
+                <TextFieldController
+                  name="telefono"
+                  control={control}
+                  label="Teléfono"
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextFieldController
+                  name="correo"
+                  control={control}
+                  label="Correo"
+                  errors={errors}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextFieldController
+                  name="direccion"
+                  control={control}
+                  label="Dirección"
+                  errors={errors}
+                />
+              </Grid>
+            </Grid>
+            <Typography variant="h6" component="h2" gutterBottom style={{ marginTop: '16px' }}>
+              Fecha de entrega estimada: {getDeliveryDate()}
+            </Typography>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+              style={{ marginTop: '16px', marginBottom: '16px' }}
+            >
+              Enviar orden
+            </Button>
+          </form>
         )
         }
 
-        <Button variant="contained" color="primary" startIcon={<HomeIcon />} style={{ marginRight: '8px' }} onClick={handleHomeClick}>
-          Home
-        </Button>
         {!isConfirming && (
           <Button variant="contained" color="secondary" startIcon={<CheckCircleIcon />} style={{ marginRight: '8px' }} onClick={handleConfirmClick}>
             Confirmar
@@ -213,7 +206,8 @@ const CartPage = () => {
           Cancelar
         </Button>
       </Container>
-    );
-  };
+    </>
+  );
+};
 
-  export default CartPage;
+export default CartPage;

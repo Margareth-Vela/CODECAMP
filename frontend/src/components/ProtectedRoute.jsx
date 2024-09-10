@@ -1,16 +1,31 @@
 import { Navigate, Outlet } from 'react-router-dom';
-import { useContext } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import { AuthContext } from '../context/AuthContext';
 
-const ProtectedRoute = ({ children, requiredRole }) => {
+const ProtectedRoute = ({ children, requiredRoles }) => {
   const { user } = useContext(AuthContext);
+  const alertShownRef = useRef(false);
+
+  console.log('Required roles:', requiredRoles);
+  console.log('Rol del user:', user?.rol);
+
+  useEffect(() => {
+    if (user && requiredRoles && !requiredRoles.includes(user.rol) && !alertShownRef.current) {
+      alert("Error: No está autorizado para ingresar a esa página.");
+      alertShownRef.current = true;
+    }
+  }, [user, requiredRoles]);
 
   if (!user) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
-  if (requiredRole && user.role !== requiredRole) {
-    return <Navigate to="/products" replace />;
+  if (requiredRoles && !requiredRoles.includes(user.rol)) {
+    if(user.Rol == 'cliente'){
+      return <Navigate to="/" replace />;
+    }else{
+      return <Navigate to="/admin/Home" replace />;
+    }
   }
 
   return children ? children : <Outlet />;

@@ -1,12 +1,11 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, IconButton, TextField, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, TextField, Box } from '@mui/material';
 
 //Contextos
 import { OrdenContext } from '../context/OrdenContext';
 
 //Iconos
-import HomeIcon from '@mui/icons-material/Home';
 import CancelIcon from '@mui/icons-material/Cancel';
 import RedoIcon from '@mui/icons-material/Redo';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -82,9 +81,6 @@ const OrderDetailsPage = () => {
     }, [orderId, fetchOrderDetails, location.state]);
 
     //Funciones para botones
-    const handleHomeClick = () => {
-        navigate('/');
-    };
 
     const handleCancelOrder = () => {
         setShowCancelForm(true);
@@ -133,14 +129,9 @@ const OrderDetailsPage = () => {
                 <Typography variant="h4" component="h1">
                     Detalles de la Orden
                 </Typography>
-                <Box>
-                    <IconButton color="primary" onClick={handleHomeClick}>
-                        <HomeIcon />
-                    </IconButton>
-                    <Button variant="contained" color="primary" onClick={handleBackToOrders} startIcon={<ArrowBackIcon />}>
-                        Regresar a Órdenes
-                    </Button>
-                </Box>
+                <Button variant="contained" color="primary" onClick={handleBackToOrders} startIcon={<ArrowBackIcon />}>
+                    Regresar a Órdenes
+                </Button>
             </Box>
 
             {orderDetails && (

@@ -7,10 +7,11 @@ const SidebarContainer = styled('div')(({ theme }) => ({
   position: 'sticky',
   top: 0,
   height: '100vh',
-  width: 200,
+  width: '100%',
   backgroundColor: theme.palette.background.paper,
   borderRight: `1px solid ${theme.palette.divider}`,
-  padding: theme.spacing(2)
+  padding: 0,
+  margin: 0
 }));
 
 // Componente estilizado para ListItem

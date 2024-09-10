@@ -1,23 +1,34 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/Home';
+import AdminHomePage from './pages/AdminHome';
 import LoginPage from './pages/Login';
 import RegisterPage from './pages/RegisterClient';
 import OrderPage from './pages/Order';
 import OrderDetailsPage from './pages/OrderDetails';
 import CartPage from './pages/Cart';
 import ProtectedRoute from './components/ProtectedRoute';
+import RedirectBasedOnRole from './components/Redirect';
+import Navbar from './components/Navbar';
+import './App.css';
 
 function App() {
+  const location = useLocation();
+  const noNavbarPaths = ['/login', '/register'];
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/login" element={<LoginPage />} />
-      <Route path="/register" element={<RegisterPage />} />
-      <Route path="/order" element={<ProtectedRoute><OrderPage /></ProtectedRoute>} />
-      <Route path="/order/:orderId" element={<ProtectedRoute><OrderDetailsPage /></ProtectedRoute>} />
-      <Route path="/cart" element={<ProtectedRoute><CartPage /></ProtectedRoute>}/>
-    </Routes>
+    <div>
+      {!noNavbarPaths.includes(location.pathname) && <Navbar />}
+      <Routes>
+        <Route path="/" element={<RedirectBasedOnRole />} />
+        <Route path="/home" element={<HomePage />} />
+        <Route path="/admin/Home" element={<ProtectedRoute requiredRoles={['admin']} ><AdminHomePage /></ProtectedRoute>} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/order" element={<ProtectedRoute requiredRoles={['cliente', 'admin']} ><OrderPage /></ProtectedRoute>} />
+        <Route path="/order/:orderId" element={<ProtectedRoute requiredRoles={['cliente', 'admin']}><OrderDetailsPage /></ProtectedRoute>} />
+        <Route path="/cart" element={<ProtectedRoute requiredRoles={['cliente']}><CartPage /></ProtectedRoute>} />
+      </Routes>
+    </div>
   );
 }
 

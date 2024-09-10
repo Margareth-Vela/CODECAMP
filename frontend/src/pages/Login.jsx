@@ -22,9 +22,13 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log(data); 
-      await login(data);
-      navigate('/'); 
+      
+      const Rol = await login(data);
+      if(Rol === 'cliente'){
+        navigate('/'); 
+      }else{
+        navigate('/admin/Home'); 
+      }
     } catch (error) {
       console.error('Error al iniciar sesión.', error);
     }

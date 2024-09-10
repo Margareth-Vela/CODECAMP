@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { login as apiLogin, register as apiRegister, logout as apiLogout } from '../api';
+import api, { login as apiLogin, register as apiRegister, logout as apiLogout } from '../api';
 
 const AuthContext = createContext();
 
@@ -15,15 +15,33 @@ const AuthProvider = ({ children }) => {
       setToken(savedToken);
       setUser(savedUser);
     }
+
+     // Interceptar respuestas de api
+     const responseInterceptor = api.interceptors.response.use(
+      response => response,
+      error => {
+        if (error.response && (error.response.status === 401 || error.response.status === 403)) {
+          logout();
+        }
+        return Promise.reject(error);
+      }
+    );
+
+    // Limpiar interceptor al desmontar
+    return () => {
+      api.interceptors.response.eject(responseInterceptor);
+    };
   }, []);
 
   const login = async (credentials) => {
     try {
-      const { token, userId, userName } = await apiLogin(credentials);
+      const { token, userId, userName, userRole } = await apiLogin(credentials);
 
       // Actualiza el estado del contexto
       setToken(token);
-      setUser({ id: userId, name: userName });
+      setUser({ id: userId, name: userName, rol: userRole });
+
+      return userRole;
     } catch (error) {
       console.error('Error al ingresar credenciales.', error);
       throw error;

@@ -10,7 +10,6 @@ import { AuthContext } from '../context/AuthContext';
 
 //Componentes
 import ProductCard from '../components/ProductCard';
-import Navbar from '../components/Navbar';
 import Sidebar from '../components/SideBar';
 
 const HomePage = () => {
@@ -49,41 +48,38 @@ const HomePage = () => {
   };
 
   return (
-    <>
-      <Navbar />
-      <Container sx={{ paddingTop: 2 }}>
-        <Box sx={{ display: 'flex' }}>
-          <Box sx={{ width: '220px', position: 'sticky', top: '66px', height: 'calc(100vh - 66px)', overflowY: 'auto', overflowX: 'hidden'}}>
-            <Sidebar categories={categories} selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
-          </Box>
-          <Box sx={{ position: 'sticky', flex: 1, overflowY: 'auto', padding: '16px' }}>
-            <Typography variant="h4" component="h1" gutterBottom>
-              Catálogo de productos
-            </Typography>
+    <Container sx={{ paddingTop: 0, margin: 0 }}>
+      <Box sx={{ display: 'flex' }}>
+        <Box sx={{ width: '220px', position: 'sticky', top: '66px', height: 'calc(100vh - 66px)', overflowY: 'auto', overflowX: 'hidden', margin: 0, padding: 0 }}>
+          <Sidebar categories={categories} selectedCategory={selectedCategory} onSelectCategory={setSelectedCategory} />
+        </Box>
+        <Box sx={{ position: 'sticky', flex: 1, overflowY: 'auto', padding: 0, ml: 2 }}>
+          <Typography variant="h4" component="h1" gutterBottom>
+            Catálogo de productos
+          </Typography>
 
-            <Box flex="1" ml={2}>
-              <Grid container spacing={3}>
-                {filteredProducts.length > 0 ? (
-                  filteredProducts.map((product) => (
-                    <Grid item xs={12} sm={6} md={4} key={product.idProductos}>
-                      <ProductCard product={product}
-                        addToCart={handleAddToCart}
-                        removeFromCart={handleRemoveFromCart}
-                        cartItem={getCartItem(product.idProductos)}
-                      />
+          <Box sx={{ display: 'flex', marginLeft: 8 }}>
+            <Grid container spacing={3}>
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <Grid item xs={12} sm={6} md={4} key={product.idProductos}>
+                    <ProductCard product={product}
+                      addToCart={handleAddToCart}
+                      removeFromCart={handleRemoveFromCart}
+                      cartItem={getCartItem(product.idProductos)}
+                    />
 
-                    </Grid>
-                  ))
-                ) : (
-                  <Typography>No hay productos disponibles.</Typography>
-                )}
+                  </Grid>
+                ))
+              ) : (
+                <Typography>No hay productos disponibles.</Typography>
+              )}
 
-              </Grid>
-            </Box>
+            </Grid>
           </Box>
         </Box>
-      </Container >
-    </>
+      </Box>
+    </Container >
   );
 };
 
