@@ -4,12 +4,12 @@ const bcrypt = require('bcryptjs');
 
 // Ruta para leer usuarios  
 exports.getAllUsers = async (req, res) => {
-  try {
-    const users = await sequelize.query("SELECT * FROM VistaUsuarios");
-    res.status(200).json(users);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+    try {
+        const users = await sequelize.query("SELECT * FROM VistaUsuarios");
+        res.status(200).json(users);
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 };
 
 
@@ -54,9 +54,9 @@ exports.updateUser = async (req, res) => {
             @password=${hashedPassword ? ':password' : 'NULL'}, 
             @telefono=:telefono, @fecha_nacimiento=:fecha_nacimiento
         `, {
-            replacements: { 
-                idUsuarios, idRol, idEstados, Correo, Nombre_completo, 
-                password: hashedPassword, telefono, fecha_nacimiento 
+            replacements: {
+                idUsuarios, idRol, idEstados, Correo, Nombre_completo,
+                password: hashedPassword, telefono, fecha_nacimiento
             }
         });
 
@@ -96,7 +96,12 @@ exports.loginUser = async (req, res) => {
         // Generación del token
         const token = generateToken(user);
 
-        res.status(200).json({ message: 'Inicio de sesión exitoso.', userId: user.idUsuarios, userName: user.Nombre_completo, token });
+        //Envio de rol
+
+        const Rol = user.idRol == 1 ? 'cliente' : 'admin';
+
+
+        res.status(200).json({ message: 'Inicio de sesión exitoso.', userId: user.idUsuarios, userName: user.Nombre_completo, userRole: Rol, token });
     } catch (error) {
         console.error('Error al intentar iniciar sesión:', error);
         res.status(500).json({ error: 'Error al intentar iniciar sesión.' });
@@ -107,19 +112,19 @@ exports.loginUser = async (req, res) => {
 exports.logoutUser = async (req, res) => {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(400).json({ message: 'Token no proporcionado' });
-  
+
     try {
-      // Agregar el token a la lista negra en la base de datos
-      await sequelize.query(`
+        // Agregar el token a la lista negra en la base de datos
+        await sequelize.query(`
         INSERT INTO RevokedTokens (token)
         VALUES (:token)
       `, {
-        replacements: { token }
-      });
-  
-      res.status(200).json({ message: 'Logout exitoso' });
+            replacements: { token }
+        });
+
+        res.status(200).json({ message: 'Logout exitoso' });
     } catch (error) {
-      console.error('Error al realizar logout:', error);
-      res.status(500).json({ message: 'Error en el logout' });
+        console.error('Error al realizar logout:', error);
+        res.status(500).json({ message: 'Error en el logout' });
     }
-  };
+};
