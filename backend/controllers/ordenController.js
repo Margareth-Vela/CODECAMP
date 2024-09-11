@@ -91,7 +91,7 @@ exports.updateOrder = async (req, res) => {
         const replacements = { idOrden, nombre_completo, direccion, telefono, correo, fecha_entrega, total_orden, idEstados };
 
         // Agregar motivo_rechazo solo si el estado es "Cancelado" o "Devuelto"
-        if ((idEstados === 2 || idEstados === 6) && motivo_rechazo) {
+        if ((idEstados === '2' || idEstados === '6') && motivo_rechazo) {
             sqlQuery += `, @motivo_rechazo=:motivo_rechazo`;
             replacements.motivo_rechazo = motivo_rechazo;
         }
