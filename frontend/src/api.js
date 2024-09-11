@@ -18,8 +18,10 @@ api.interceptors.request.use((config) => {
 });
 
 // ***********************************************************************
-//                        LOGIN
+//                        AUTENTICACION 
 // ***********************************************************************
+
+// --------------------------- LOGIN -------------------------------------- 
 export const login = async (credentials) => {
   try {
     const { data } = await api.post('/login', credentials);
@@ -32,10 +34,7 @@ export const login = async (credentials) => {
   }
 
 };
-
-// ***********************************************************************
-//                        LOGOUT
-// ***********************************************************************
+// --------------------------- LOGOUT -------------------------------------- 
 export const logout = async () => {
   try {
     await api.post('/logout');
@@ -45,17 +44,17 @@ export const logout = async () => {
   }
 };
 
-// ***********************************************************************
-//                        CREATE/REGISTER
-// ***********************************************************************
+// --------------------------- REGISTER -------------------------------------- 
 export const register = async (userInfo) => {
   const { data } = await api.post('/users/create', userInfo);
   return data;
 };
 
 // ***********************************************************************
-//                        ENVIAR ORDEN
+//                        CRUD ORDENES
 // ***********************************************************************
+
+// --------------------------- ENVIAR ORDENES ----------------------------
 export const submitOrder = async (ordenInfo) => {
   try {
     const { data } = await api.post('/orden/create', ordenInfo);
@@ -66,9 +65,7 @@ export const submitOrder = async (ordenInfo) => {
   }
 };
 
-// ***********************************************************************
-//                        ACTUALIZAR ORDEN
-// ***********************************************************************
+// ------------------------ ACTUALIZAR ORDENES ----------------------------
 export const updateOrder = async (orderId, ordenInfo) => {
   try {
     await api.put(`/orden/update/${orderId}`, ordenInfo);
@@ -78,9 +75,7 @@ export const updateOrder = async (orderId, ordenInfo) => {
   }
 };
 
-// ***********************************************************************
-//                        OBTENER ORDEN USUARIO
-// ***********************************************************************
+// --------------------------- GET ORDENES USER ----------------------------
 export const fetchOrderUser = async (userId) => {
   try {
     const { data } = await api.get(`/orden/user/${userId}`);
@@ -90,12 +85,22 @@ export const fetchOrderUser = async (userId) => {
     throw error;
   }
 };
-// ***********************************************************************
-//                        OBTENER ORDEN DETALLES
-// ***********************************************************************
+
+// --------------------------- GET ORDENES DETAILS----------------------------
 export const fetchOrderDetails = async (orderId) => {
   try {
     const { data } = await api.get(`/orden/details/${orderId}`);
+    return data[0];
+  } catch (error) {
+    console.error('Error al obtener detalles de la orden.', error);
+    throw error;
+  }
+};
+
+// --------------------------- GET ALL ORDENES ----------------------------
+export const fetchOrder = async () => {
+  try {
+    const { data } = await api.get('/orden');
     return data[0];
   } catch (error) {
     console.error('Error al obtener detalles de la orden.', error);

@@ -1,35 +1,83 @@
-import React from 'react';
-import { Grid, Card, CardContent, Typography, Button } from '@mui/material';
+import React, { useEffect, useState, useContext } from 'react';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
+//Contextos
+import { OrdenContext } from '../context/OrdenContext';
 
 
 const AdminHomePage = () => {
-    const actions = [
-        { title: 'Ver Productos', description: 'Administra los productos disponibles', link: '/admin/products' },
-        { title: 'Ver Categorías', description: 'Administra las categorías de productos', link: '/admin/categories' },
-        { title: 'Ver Órdenes', description: 'Administra las órdenes de compra', link: '/admin/orders' },
-        { title: 'Ver Usuarios', description: 'Administra los usuarios del sistema', link: '/admin/users' },
-    ];
+    const { fetchOrders } = useContext(OrdenContext);
+    const [orders, setOrders] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchOrder = async () => {
+            try {
+                const data = await fetchOrders();
+                console.log('Datos orders:',data)
+                setOrders(data);
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            }
+        };
+
+        fetchOrder();
+    }, []);
+
+    const handleRowClick = (orderId) => {
+        try {
+            const selectedOrder = orders.find(order => order.idOrden === orderId);
+            navigate(`/admin/order/${orderId}`, { state: { orderDetails: selectedOrder } });
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    // Función para formatear la fecha
+    const formatDate = (dateString) => {
+        return dateString.split('T')[0];
+    };
 
     return (
-            <Grid container spacing={3}>
-                {actions.map((action, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Card>
-                            <CardContent>
-                                <Typography variant="h5" component="div">
-                                    {action.title}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary">
-                                    {action.description}
-                                </Typography>
-                                <Button variant="contained" color="primary" href={action.link} style={{ marginTop: '10px' }}>
-                                    Ir
-                                </Button>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
+        <Paper>
+            <Typography variant="h5" component="div" style={{ padding: '16px' }}>
+                Historial de Órdenes
+            </Typography>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>ID Orden</TableCell>
+                            <TableCell>ID Usuario</TableCell>
+                            <TableCell>Nombre Completo</TableCell>
+                            <TableCell>Estado</TableCell>
+                            <TableCell>Fecha de Creación</TableCell>
+                            <TableCell>Fecha de Entrega</TableCell>
+                            <TableCell>Total</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {orders.map((order) => (
+                            <TableRow 
+                                key={order.idOrden} 
+                                hover 
+                                onClick={() => handleRowClick(order.idOrden)}
+                                style={{ cursor: 'pointer' }}
+                            >
+                                <TableCell>{order.idOrden}</TableCell>
+                                <TableCell>{order.idUsuarios}</TableCell>
+                                <TableCell>{order.nombre_completo}</TableCell>
+                                <TableCell>{order.Estado}</TableCell>
+                                <TableCell>{formatDate(order.fecha_creacion)}</TableCell>
+                                <TableCell>{order.fecha_entrega}</TableCell>
+                                <TableCell>{(order.total_orden).toFixed(2)}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Paper>
     );
 };
 

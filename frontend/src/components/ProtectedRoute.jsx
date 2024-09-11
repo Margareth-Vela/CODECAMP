@@ -6,9 +6,6 @@ const ProtectedRoute = ({ children, requiredRoles }) => {
   const { user } = useContext(AuthContext);
   const alertShownRef = useRef(false);
 
-  console.log('Required roles:', requiredRoles);
-  console.log('Rol del user:', user?.rol);
-
   useEffect(() => {
     if (user && requiredRoles && !requiredRoles.includes(user.rol) && !alertShownRef.current) {
       alert("Error: No está autorizado para ingresar a esa página.");
@@ -22,7 +19,7 @@ const ProtectedRoute = ({ children, requiredRoles }) => {
 
   if (requiredRoles && !requiredRoles.includes(user.rol)) {
     if(user.Rol == 'cliente'){
-      return <Navigate to="/" replace />;
+      return <Navigate to="/home" replace />;
     }else{
       return <Navigate to="/admin/Home" replace />;
     }

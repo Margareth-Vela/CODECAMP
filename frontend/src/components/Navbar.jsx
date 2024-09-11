@@ -102,7 +102,7 @@ const Navbar = () => {
                 <IconButton color="inherit" component={Link} to="/admin/orders">
                   <ListAltIcon />
                   <Typography variant="body1" sx={{ marginLeft: 1 }}>
-                    Órdenes
+                    Estados
                   </Typography>
                 </IconButton>
                 <IconButton color="inherit" component={Link} to="/admin/users">

@@ -1,6 +1,8 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, TextField, Box } from '@mui/material';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 //Contextos
 import { OrdenContext } from '../context/OrdenContext';
@@ -87,7 +89,7 @@ const OrderDetailsPage = () => {
     };
 
     const handleReturnOrder = () => {
-        setShowCancelForm(true);
+        setShowReturnForm(true);
     };
 
     const handleCancelSubmit = async () => {
@@ -187,9 +189,11 @@ const OrderDetailsPage = () => {
                         </Typography>
                     ) : (
                         <>
-                            <Button variant="contained" color="error" onClick={handleCancelOrder} startIcon={<CancelIcon />} sx={{ mr: 2 }}>
-                                Cancelar Pedido
-                            </Button>
+                            {!showReturnButton && (
+                                <Button variant="contained" color="error" onClick={handleCancelOrder} startIcon={<CancelIcon />} sx={{ mr: 2 }}>
+                                    Cancelar Pedido
+                                </Button>
+                            )}
 
                             {showReturnButton && (
                                 <Button variant="contained" color="secondary" onClick={handleReturnOrder} startIcon={<RedoIcon />}>

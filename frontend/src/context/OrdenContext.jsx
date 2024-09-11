@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import { submitOrder as apiOrden, fetchOrderDetails as apiOrderDetails, fetchOrderUser as apiOrderUser, updateOrder as apiUpdate } from '../api';
+import { submitOrder as apiOrden, fetchOrderDetails as apiOrderDetails, fetchOrderUser as apiOrderUser, updateOrder as apiUpdate, fetchOrder as apiOrders } from '../api';
 
 // Crear el contexto
 export const OrdenContext = createContext();
@@ -19,7 +19,7 @@ export const OrdenProvider = ({ children }) => {
         }
     };
 
-    const fetchOrders = async (userId) => {
+    const fetchOrderUser = async (userId) => {
         try {
             const data = await apiOrderUser(userId);
             return data;
@@ -37,6 +37,16 @@ export const OrdenProvider = ({ children }) => {
         }
     };
 
+    const fetchOrders = async () => {
+        try {
+            const data = await apiOrders();
+            return data;
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+    
+
     const updateOrder = async (orderId, OrderInfo) => {
         try {
             const data = await apiUpdate(orderId, OrderInfo);
@@ -47,7 +57,7 @@ export const OrdenProvider = ({ children }) => {
     };
 
     return (
-        <OrdenContext.Provider value={{ordenes, error, createOrden, fetchOrders, fetchOrderDetails, updateOrder }}>
+        <OrdenContext.Provider value={{ordenes, error, createOrden, fetchOrderUser, fetchOrderDetails, updateOrder, fetchOrders }}>
             {children}
         </OrdenContext.Provider>
     );

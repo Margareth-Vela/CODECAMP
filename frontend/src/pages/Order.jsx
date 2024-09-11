@@ -11,7 +11,7 @@ import OrderCard from '../components/OrderCard';
 
 const OrderPage = () => {
   const { user } = useContext(AuthContext);
-  const { fetchOrders } = useContext(OrdenContext);
+  const { fetchOrderUser } = useContext(OrdenContext);
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState(null);
 
@@ -19,14 +19,14 @@ const OrderPage = () => {
   useEffect(() => {
     const getOrders = async () => {
       try {
-        const data = await fetchOrders(user.id);
+        const data = await fetchOrderUser(user.id);
         setOrders(data);
       } catch (err) {
         setError(err.message);
       }
     };
     getOrders();
-  }, [user.id, fetchOrders]);
+  }, [user.id, fetchOrderUser]);
 
 
   return (
