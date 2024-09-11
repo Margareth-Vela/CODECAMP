@@ -2,7 +2,7 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { TextField, MenuItem } from '@mui/material';
 
-const SelectFieldController = ({ name, control, label, options, errors, ...rest }) => (
+const SelectFieldController = ({ name, control, label, options = [], errors, ...rest }) => (
     <Controller
         name={name}
         control={control}

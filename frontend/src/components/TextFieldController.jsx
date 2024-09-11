@@ -1,8 +1,8 @@
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { TextField } from '@mui/material';
+import { TextField, InputAdornment } from '@mui/material';
 
-const TextFieldController = ({ name, control, label, type = 'text', ...props }) => (
+const TextFieldController = ({ name, control, isCurrency = false, label, type = 'text', ...props }) => (
   <Controller
     name={name}
     control={control}
@@ -16,6 +16,9 @@ const TextFieldController = ({ name, control, label, type = 'text', ...props }) 
         fullWidth
         error={!!props.errors[name]}
         helperText={props.errors[name]?.message}
+        InputProps={{
+          startAdornment: isCurrency && <InputAdornment position="start">$</InputAdornment>,
+        }}
         {...props}
       />
     )}

@@ -13,10 +13,11 @@ const registerSchema = yup.object().shape({
       .required('Confirmar contraseña es requerido.'),
     telefono: yup.string()
       .matches(/^[0-9()+-]+$/, 'El teléfono debe ser un número.')
-      .max(12, 'El teléfono no puede ser mayor a 12 caracteres.')
+      .max(20, 'El teléfono no puede ser mayor a 20 caracteres.')
       .required('El teléfono es requerido.'),
-    fecha_nacimiento: yup.date().max(minDate, 'Debe ser mínimo de 18 años para realizar las compras.').required('La fecha de nacimiento es requerida.'),
+    fecha_nacimiento: yup.date().max(minDate, 'Debe cumplir con el mínimo de 18 años.').required('La fecha de nacimiento es requerida.'),
     idRol: yup.string().required('El rol es requerido.'),
+    idEstados: yup.string()
   });
 
   export default registerSchema;

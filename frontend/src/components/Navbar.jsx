@@ -84,7 +84,7 @@ const Navbar = () => {
                 <IconButton color="inherit" component={Link} to="/admin/Home">
                   <AdminPanelSettingsIcon />
                   <Typography variant="body1" sx={{ marginLeft: 1 }}>
-                    {user.name}
+                    Órdenes
                   </Typography>
                 </IconButton>
                 <IconButton color="inherit" component={Link} to="/admin/products">

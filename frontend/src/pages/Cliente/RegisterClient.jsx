@@ -2,11 +2,11 @@ import React, {useContext} from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useNavigate, Link } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import { AuthContext } from '../../context/AuthContext';
 import {Button, IconButton, Typography, Container, Box } from '@mui/material';
-import registerSchema from '../validation/registerSchema';
+import registerSchema from '../../validation/registerSchema';
 import HomeIcon from '@mui/icons-material/Home';
-import TextFieldController from '../components/TextFieldController';
+import TextFieldController from '../../components/TextFieldController';
 
 const Register = () => {
   const { register } = useContext(AuthContext);

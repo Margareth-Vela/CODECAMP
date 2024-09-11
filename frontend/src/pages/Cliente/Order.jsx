@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Container, Typography, Divider, Grid } from '@mui/material';
 
 //Contextos
-import { AuthContext } from '../context/AuthContext';
-import { OrdenContext } from '../context/OrdenContext';
+import { AuthContext } from '../../context/AuthContext';
+import { OrdenContext } from '../../context/OrdenContext';
 
 //Componentes
-import OrderCard from '../components/OrderCard';
+import OrderCard from '../../components/OrderCard';
 
 
 const OrderPage = () => {

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import api, { login as apiLogin, register as apiRegister, logout as apiLogout } from '../api';
+import api, { login as apiLogin, register as apiRegister, logout as apiLogout, fetchUsers as apiUsers, registerAdmin as apiRegisterAdmin, updateUsers as apiUpdate } from '../api';
 
 const AuthContext = createContext();
 
@@ -56,6 +56,14 @@ const AuthProvider = ({ children }) => {
     }
   };
 
+  const registerAdmin = async (userInfo) => {
+    try {
+      const data = await apiRegisterAdmin(userInfo);
+    } catch (error) {
+      console.error('Error al registrar el usuario.', error);
+    }
+  };
+
   const logout = async () => {
     await apiLogout();
     localStorage.removeItem('token');
@@ -64,8 +72,27 @@ const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const fetchUsers = async () => {
+    try {
+      const data = await apiUsers();
+      return data;
+    } catch (error) {
+      console.error('Error al registrar el usuario.', error);
+    }
+  };
+
+  const updateUsers = async (userId, userInfo) => {
+    try {
+        const data = await apiUpdate(userId, userInfo);
+        return data;
+    } catch (error) {
+        setError(error.message);
+    }
+};
+
+
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, register, logout, fetchUsers, registerAdmin, updateUsers }}>
       {children}
     </AuthContext.Provider>
   );

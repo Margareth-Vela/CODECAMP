@@ -3,7 +3,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { useNavigate } from 'react-router-dom';
 
 //Contextos
-import { OrdenContext } from '../context/OrdenContext';
+import { OrdenContext } from '../../context/OrdenContext';
 
 
 const AdminHomePage = () => {

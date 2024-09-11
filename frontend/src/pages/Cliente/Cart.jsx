@@ -1,19 +1,19 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Container, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, IconButton, Button, Paper, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 //Contextos
-import { CartContext } from '../context/CartContext';
-import { AuthContext } from '../context/AuthContext';
-import { OrdenContext } from '../context/OrdenContext';
+import { CartContext } from '../../context/CartContext';
+import { AuthContext } from '../../context/AuthContext';
+import { OrdenContext } from '../../context/OrdenContext';
 
 //Esquemas
-import ordenSchema from '../validation/ordenSchema'
+import ordenSchema from '../../validation/ordenSchema'
 
 //Componentes
-import TextFieldController from '../components/TextFieldController';
+import TextFieldController from '../../components/TextFieldController';
 
 //Iconos de la aplicacion 
 import CancelIcon from '@mui/icons-material/Cancel';

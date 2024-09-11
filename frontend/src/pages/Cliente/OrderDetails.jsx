@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 //Contextos
-import { OrdenContext } from '../context/OrdenContext';
+import { OrdenContext } from '../../context/OrdenContext';
 
 //Iconos
 import CancelIcon from '@mui/icons-material/Cancel';
