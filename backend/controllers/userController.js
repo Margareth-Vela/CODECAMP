@@ -15,7 +15,7 @@ exports.getAllUsers = async (req, res) => {
 
 // Ruta para crear un usuario REGISTER
 exports.createUser = async (req, res) => {
-    const { idRol, idEstados, Correo, Nombre_completo, password, telefono, fecha_nacimiento } = req.body;
+    const { idRol, Correo, Nombre_completo, password, telefono, fecha_nacimiento } = req.body;
 
     try {
         // Encriptar la contraseña antes de guardarla
@@ -25,7 +25,7 @@ exports.createUser = async (req, res) => {
             EXEC InsertarUsuario @idRol=:idRol, @Correo=:Correo, 
             @Nombre_completo=:Nombre_completo, @password=:password, @telefono=:telefono, @fecha_nacimiento=:fecha_nacimiento
         `, {
-            replacements: { idRol, idEstados, Correo, Nombre_completo, password: hashedPassword, telefono, fecha_nacimiento }
+            replacements: { idRol, Correo, Nombre_completo, password: hashedPassword, telefono, fecha_nacimiento }
         });
 
         res.status(201).json({ message: 'Usuario creado exitosamente.' });

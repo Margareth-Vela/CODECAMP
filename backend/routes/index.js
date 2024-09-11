@@ -11,7 +11,7 @@ const { authenticateToken, authorizeRole } = require('../config/auth.js');
 // ***********************************************************************
 //                     ENDPOINTS MAIN
 // ***********************************************************************
-router.get('/products', productController.getAllProducts);
+router.get('/products', productController.getActiveProducts);
 router.post('/login', userController.loginUser);
 router.post('/users/create', userController.createUser);
 
@@ -23,14 +23,18 @@ router.post('/logout', userController.logoutUser);
 // ***********************************************************************
 //                     ENDPOINTS PRODUCTOS
 // ***********************************************************************
+router.get('/products/getAll', authorizeRole([ROLES.ADMIN]), productController.getAllProducts);
+router.post('/products/checkCode', authorizeRole([ROLES.ADMIN]), productController.checkIfCodeExists);
 router.post('/products/create', authorizeRole([ROLES.ADMIN]), productController.createProduct);
 router.put('/products/update/:idProductos', authorizeRole([ROLES.ADMIN]), productController.updateProduct);
 
 // ***********************************************************************
 //                     ENDPOINTS CATEGORIA PRODUCTOS
 // ***********************************************************************
+router.get('/CatProducts/getProductsCategory', authorizeRole([ROLES.ADMIN]), productController.getProductsbyCategory);
 router.get('/CatProducts', authorizeRole([ROLES.ADMIN]), catProductController.getAllCategories);
 router.post('/CatProducts/create', authorizeRole([ROLES.ADMIN]), catProductController.createCategory);
+router.post('/CatProducts/checkName', authorizeRole([ROLES.ADMIN]), catProductController.checkIfNameExists);
 router.put('/CatProducts/update/:idCategoriaProductos', authorizeRole([ROLES.ADMIN]), catProductController.updateCategory);
 
 // ***********************************************************************
