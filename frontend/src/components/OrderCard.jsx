@@ -17,13 +17,13 @@ const OrderCard = ({ order }) => {
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'pendiente':
+            case 'En proceso':
                 return 'warning';
-            case 'procesando':
+            case 'Confirmado':
                 return 'info';
-            case 'Entregado':
+            case 'Entregado' || 'Enviado':
                 return 'success';
-            case 'Cancelado':
+            case 'Cancelado' || 'Devuelto':
                 return 'error';
             default:
                 return 'default';
@@ -73,7 +73,7 @@ const OrderCard = ({ order }) => {
                             <Typography variant="body1">Order ID: {order.idOrden}</Typography>
                             <Typography variant="body1">Fecha de entrega: {order.fecha_entrega}</Typography>
                             <Typography variant="body1">Estado de la orden: {order.Estado}</Typography>
-                            <Typography variant="body1">Total: ${order.total_orden}</Typography>
+                            <Typography variant="body1">Total: ${(order.total_orden).toFixed(2)}</Typography>
                         </Box>
                     </CardContent>
                 </Badge>

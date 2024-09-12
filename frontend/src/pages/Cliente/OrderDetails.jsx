@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, TextField, Box } from '@mui/material';
-import { useForm, Controller } from 'react-hook-form';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Button, Box } from '@mui/material';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 //Contextos
@@ -12,6 +12,12 @@ import CancelIcon from '@mui/icons-material/Cancel';
 import RedoIcon from '@mui/icons-material/Redo';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
+//Componentes
+import TextFieldController from '../../components/TextFieldController';
+
+//Schema
+import orderDetailsSchema from '../../validation/orderDetailsSchema';
+
 const OrderDetailsPage = () => {
     const { orderId } = useParams();
     const navigate = useNavigate();
@@ -21,18 +27,21 @@ const OrderDetailsPage = () => {
     const [error, setError] = useState(null);
     const [showCancelForm, setShowCancelForm] = useState(false);
     const [showReturnForm, setShowReturnForm] = useState(false);
-    const [cancelReason, setCancelReason] = useState('');
-    const [returnReason, setReturnReason] = useState('');
     const [showReturnButton, setShowReturnButton] = useState(false);
-    const [clientInfo, setClientInfo] = useState({
-        nombre_completo: '',
-        telefono: '',
-        correo: '',
-        direccion: '',
-        fecha_entrega: '',
-        total_orden: '',
-        idEstados: '',
-        motivo_rechazo: ''
+    const order = location.state.orderDetails;
+
+    const { control, handleSubmit, setValue, formState: { errors } } = useForm({
+        resolver: yupResolver(orderDetailsSchema),
+        defaultValues: {
+            nombre_completo: '',
+            telefono: '',
+            correo: '',
+            direccion: '',
+            fecha_entrega: '',
+            total_orden: '',
+            idEstados: '',
+            motivo_rechazo: '',
+        }
     });
 
     useEffect(() => {
@@ -44,8 +53,6 @@ const OrderDetailsPage = () => {
                 }
 
                 const data = await fetchOrderDetails(orderId);
-
-                const order = location.state.orderDetails;
 
                 const products = data.detallesOrden.split(';').map(detail => {
                     const parts = detail.split(',').map(part => part.trim());
@@ -60,16 +67,18 @@ const OrderDetailsPage = () => {
                 });
 
                 setOrderDetails({ ...data, products, order });
-                setClientInfo({
-                    nombre_completo: order.nombre_completo,
-                    telefono: order.telefono,
-                    correo: order.correo,
-                    direccion: order.direccion,
-                    fecha_entrega: order.fecha_entrega,
-                    total_orden: order.total_orden,
-                    idEstados: '',
-                    motivo_rechazo: 'Sin descripción.'
-                });
+                setValue('nombre_completo', order.nombre_completo);
+                setValue('telefono', order.telefono);
+                setValue('correo', order.correo);
+                setValue('direccion', order.direccion);
+                setValue('fecha_entrega', order.fecha_entrega);
+                setValue('total_orden', order.total_orden);
+                setValue('idEstados', '');
+                if (order.motivo_rechazo != null) {
+                    setValue('motivo_rechazo', order.motivo_rechazo);
+                } else {
+                    setValue('motivo_rechazo', '');
+                }
 
                 if (order.Estado === 'Entregado') {
                     setShowReturnButton(true);
@@ -80,41 +89,30 @@ const OrderDetailsPage = () => {
             }
         };
         getOrderDetails();
-    }, [orderId, fetchOrderDetails, location.state]);
+    }, [orderId, setValue]);
 
     //Funciones para botones
 
     const handleCancelOrder = () => {
+        setValue('idEstados', '2')
         setShowCancelForm(true);
     };
 
     const handleReturnOrder = () => {
+        setValue('idEstados', '6')
         setShowReturnForm(true);
     };
 
-    const handleCancelSubmit = async () => {
-        try {
-            await updateOrder(orderId, {
-                ...clientInfo,
-                idEstados: 2,
-                motivo_rechazo: cancelReason
-            });
-            navigate('/order'); // Regresa a la página de órdenes después de cancelar
-        } catch (err) {
-            console.error('Error al cancelar la orden.', err);
+    const onSubmit = async (data) => {
+        if (!data.motivo_rechazo) {
+            data.motivo_rechazo = 'Sin descripción.';
         }
-    };
-
-    const handleReturnSubmit = async () => {
         try {
-            await updateOrder(orderId, {
-                ...clientInfo,
-                idEstados: 6,
-                motivo_rechazo: returnReason
-            });
-            navigate('/order'); // Regresa a la página de órdenes después de devolver
-        } catch (err) {
-            console.error('Error al devolver la orden.', err);
+            await updateOrder(orderId, data);
+            alert('Orden actualizada con éxito');
+            navigate('/order')
+        } catch (error) {
+            console.error('Error al actualizar orden:', error);
         }
     };
 
@@ -122,6 +120,7 @@ const OrderDetailsPage = () => {
         navigate('/order');
     };
 
+    if (!orderDetails) return <Typography>Cargando...</Typography>;
 
     if (error) return <div>Error: {error}</div>;
 
@@ -169,7 +168,7 @@ const OrderDetailsPage = () => {
                             ))
                         ) : (
                             <TableRow>
-                                <TableCell colSpan={6}>Loading...</TableCell>
+                                <TableCell colSpan={6}>Cargando...</TableCell>
                             </TableRow>
                         )}
                         {orderDetails && (
@@ -209,36 +208,34 @@ const OrderDetailsPage = () => {
             {showCancelForm && (
                 <Box mt={2}>
                     <Typography variant="h6">Motivo de Rechazo</Typography>
-                    <TextField
-                        label="Motivo"
-                        value={cancelReason}
-                        onChange={(e) => setCancelReason(e.target.value)}
-                        multiline
-                        rows={4}
-                        fullWidth
-                        variant="outlined"
-                    />
-                    <Button variant="contained" color="error" onClick={handleCancelSubmit} sx={{ mt: 2 }}>
-                        Confirmar Cancelación
-                    </Button>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <TextFieldController
+                            name="motivo_rechazo"
+                            control={control}
+                            label="Motivo de rechazo"
+                            errors={errors}
+                        />
+                        <Button type="submit" variant="contained" color="primary" style={{ marginTop: '16px' }}>
+                            Confirmar cancelación
+                        </Button>
+                    </form>
                 </Box>
             )}
 
             {showReturnForm && (
                 <Box mt={2}>
                     <Typography variant="h6">Motivo de Devolución</Typography>
-                    <TextField
-                        label="Motivo"
-                        value={returnReason}
-                        onChange={(e) => setReturnReason(e.target.value)}
-                        multiline
-                        rows={4}
-                        fullWidth
-                        variant="outlined"
-                    />
-                    <Button variant="contained" color="error" onClick={handleReturnSubmit} sx={{ mt: 2 }}>
-                        Confirmar Devolución
-                    </Button>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <TextFieldController
+                            name="motivo_rechazo"
+                            control={control}
+                            label="Motivo de rechazo"
+                            errors={errors}
+                        />
+                        <Button type="submit" variant="contained" color="primary" style={{ marginTop: '16px' }}>
+                            Confirmar devolución
+                        </Button>
+                    </form>
                 </Box>
             )}
         </Box>

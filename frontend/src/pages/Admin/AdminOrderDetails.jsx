@@ -108,11 +108,9 @@ const AdminOrderDetailPage = () => {
             setIsEditing(false);
             navigate('/admin/Home')
         } catch (error) {
-            console.error('Error updating order:', error);
+            console.error('Error al actualizar orden:', error);
         }
     };
-
-    console.log('Selected state', selectedState)
 
     if (!orderDetails) return <Typography>Cargando...</Typography>;
 
@@ -162,7 +160,7 @@ const AdminOrderDetailPage = () => {
                                             ))
                                         ) : (
                                             <TableRow>
-                                                <TableCell colSpan={6}>Loading...</TableCell>
+                                                <TableCell colSpan={6}>Cargando...</TableCell>
                                             </TableRow>
                                         )}
                                         {orderDetails && (

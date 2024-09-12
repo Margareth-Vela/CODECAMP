@@ -1,4 +1,11 @@
 import * as yup from 'yup';
+const MAX_FILE_SIZE = 50 * 1024;
+
+function getBase64FileSize(base64) {
+    let stringLength = base64.length - 'data:image/jpeg;base64,'.length;
+    let sizeInBytes = 4 * Math.ceil(stringLength / 3) * 0.5624896334383812;
+    return sizeInBytes;
+  }
 
 const productSchema = yup.object().shape({
     idCategoriaProductos: yup.string().required('Categoria de productos es requerido'),
@@ -10,7 +17,10 @@ const productSchema = yup.object().shape({
     stock: yup.string().matches(/^[0-9]+$/, 'El stock debe ser un número.').required('Stock es requerido.'),
     precio: yup.string().matches(/^[0-9.]+$/, 'El precio debe ser un número.').required('Precio es requerido.'),
     foto: yup.mixed()
-        .nullable(),
+        .nullable().test('fileSize', 'El archivo es demasiado grande. El tamaño máximo es 50KB.', (value) => {
+            if (!value) return true; // Allow null values
+            return getBase64FileSize(value)<= MAX_FILE_SIZE;
+          }),
 });
 
 export default productSchema;

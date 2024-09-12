@@ -17,10 +17,10 @@ const ProductCard = ({ product, addToCart, removeFromCart, cartItem }) => {
         setImageUrl(`data:image/jpeg;base64,${base64}`);
       }
     };
-  
+
     convertToBase64();
   }, [product.foto]);
-  
+
   // Función para convertir ArrayBuffer a Base64
   const arrayBufferToBase64 = (buffer) => {
     let binary = '';
@@ -31,10 +31,12 @@ const ProductCard = ({ product, addToCart, removeFromCart, cartItem }) => {
     }
     return window.btoa(binary);
   };
-  
+
+  // Verifica si el producto está en stock
+  const isOutOfStock = product.stock === 0;
 
   return (
-    <Card sx={{ maxWidth: 345, marginBottom: 2, position: 'relative' }}>
+    <Card sx={{ maxWidth: 345, marginBottom: 2, position: 'relative', opacity: isOutOfStock ? 0.5 : 1, pointerEvents: isOutOfStock ? 'none' : 'auto' }}>
       <Box sx={{ height: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f5f5f5' }}>
         <CardMedia
           component="img"
@@ -78,7 +80,7 @@ const ProductCard = ({ product, addToCart, removeFromCart, cartItem }) => {
           ${product.precio}
         </Typography>
         <Box display="flex" alignItems="center" justifyContent="space-between" mt={2}>
-          <IconButton color="primary" onClick={() => addToCart(product)}>
+          <IconButton color="primary" onClick={() => addToCart(product)} disabled={isOutOfStock}>
             <AddShoppingCartIcon />
           </IconButton>
           <Box display="flex" alignItems="center">
@@ -86,7 +88,7 @@ const ProductCard = ({ product, addToCart, removeFromCart, cartItem }) => {
               <Typography variant="body1">{cartItem ? cartItem.quantity : 0}</Typography>
             </Badge>
           </Box>
-          <IconButton color="secondary" onClick={() => removeFromCart(product.idProductos)}>
+          <IconButton color="secondary" onClick={() => removeFromCart(product.idProductos)} disabled={isOutOfStock}>
             <RemoveShoppingCartIcon />
           </IconButton>
         </Box>
