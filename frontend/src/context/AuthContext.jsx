@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import api, { login as apiLogin, register as apiRegister, logout as apiLogout, fetchUsers as apiUsers, registerAdmin as apiRegisterAdmin, updateUsers as apiUpdate } from '../api';
+import api, { login as apiLogin, register as apiRegister, logout as apiLogout, fetchUsers as apiUsers, registerAdmin as apiRegisterAdmin, updateUsers as apiUpdate, createState as apiCreateState, updateStates as apiUpdateState, fetchAllStates as apiStates } from '../api';
 
 const AuthContext = createContext();
 
@@ -16,8 +16,8 @@ const AuthProvider = ({ children }) => {
       setUser(savedUser);
     }
 
-     // Interceptar respuestas de api
-     const responseInterceptor = api.interceptors.response.use(
+    // Interceptar respuestas de api
+    const responseInterceptor = api.interceptors.response.use(
       response => response,
       error => {
         if (error.response && (error.response.status === 401 || error.response.status === 403)) {
@@ -77,22 +77,48 @@ const AuthProvider = ({ children }) => {
       const data = await apiUsers();
       return data;
     } catch (error) {
-      console.error('Error al registrar el usuario.', error);
+      console.error('Error al hacer fetch de usuarios.', error);
     }
   };
 
   const updateUsers = async (userId, userInfo) => {
     try {
-        const data = await apiUpdate(userId, userInfo);
-        return data;
+      const data = await apiUpdate(userId, userInfo);
+      return data;
     } catch (error) {
-        setError(error.message);
+      console.error('Error al actualizar el usuario.', error);
     }
-};
+  };
+
+  const createState = async (stateInfo) => {
+    try {
+      const data = await apiCreateState(stateInfo);
+    } catch (error) {
+      console.error('Error al registrar el usuario.', error);
+    }
+  };
+
+  const fetchStates = async () => {
+    try {
+      const data = await apiStates();
+      return data;
+    } catch (error) {
+      console.error('Error al hacer fetch de los estados.', error);
+    }
+  };
+
+  const updateStates = async (stateId, stateInfo) => {
+    try {
+      const data = await apiUpdateState(stateId, stateInfo);
+      return data;
+    } catch (error) {
+      console.error('Error al actualizar el estado .', error);
+    }
+  };
 
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, fetchUsers, registerAdmin, updateUsers }}>
+    <AuthContext.Provider value={{ user, login, register, logout, fetchUsers, registerAdmin, updateUsers, createState, fetchStates, updateStates }}>
       {children}
     </AuthContext.Provider>
   );

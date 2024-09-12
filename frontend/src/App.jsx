@@ -23,6 +23,7 @@ import AdminCreateProductPage from './pages/Admin/AdminCreateProduct';
 import AdminCategoriesPage from './pages/Admin/AdminCategories';
 import AdminCategoryDetailPage from './pages/Admin/AdminCategoriesDetails';
 import AdminCreateCategoryPage from './pages/Admin/AdminCreateCategory';
+import AdminStatesPage from './pages/Admin/AdminEstados';
 
 //Paginas para CLIENTES
 import RegisterPage from './pages/Cliente/RegisterClient';
@@ -46,6 +47,7 @@ function App() {
         <Route path="/admin/Home" element={<ProtectedRoute requiredRoles={['admin']} ><AdminHomePage /></ProtectedRoute>} />
         <Route path="/admin/order/:orderId" element={<ProtectedRoute requiredRoles={['admin']}><AdminOrderDetailsPage /></ProtectedRoute>} />
         <Route path="/admin/users" element={<ProtectedRoute requiredRoles={['admin']} ><AdminUsersPage /></ProtectedRoute>} />
+        <Route path="/admin/states" element={<ProtectedRoute requiredRoles={['admin']} ><AdminStatesPage /></ProtectedRoute>} />
         <Route path="/admin/products" element={<ProtectedRoute requiredRoles={['admin']} ><AdminProductsPage /></ProtectedRoute>} />
         <Route path="/admin/products/:productId" element={<ProtectedRoute requiredRoles={['admin']}><AdminProductDetailPage /></ProtectedRoute>} />
         <Route path="/admin/users/:userId" element={<ProtectedRoute requiredRoles={['admin']}><AdminUserDetailPage /></ProtectedRoute>} />

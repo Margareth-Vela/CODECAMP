@@ -249,12 +249,47 @@ export const fetchProductbyCategory = async () => {
   }
 };
 
-// ------------------------ ACTUALIZAR PRODUCTOS ----------------------------
+// ------------------------ ACTUALIZAR CATEGORIAS ----------------------------
 export const updateCategories = async (categoryId, categoryInfo) => {
   try {
     await api.put(`/CatProducts/update/${categoryId}`, categoryInfo);
   } catch (error) {
     console.error('Error al actualizar categorias.', error);
+    throw error;
+  }
+};
+
+// ***********************************************************************
+//                        CRUD ESTADOS
+// ***********************************************************************
+// --------------------------- CREAR ESTADO ----------------------------
+export const createState = async (stateInfo) => {
+  try {
+    const { data } = await api.post('/states/create', stateInfo);
+    return data;
+  } catch (error) {
+    console.error('Error al crear estado.', error);
+    throw error;
+  }
+};
+
+// --------------------------- GET ALL STATES ----------------------------
+export const fetchAllStates = async () => {
+  try {
+    const { data } = await api.get('/states');
+    return data[0];
+  } catch (error) {
+    console.error('Error al obtener estados.', error);
+    throw error;
+  }
+};
+
+// ------------------------ ACTUALIZAR CATEGORIAS ----------------------------
+export const updateStates = async (stateInfo) => {
+  try {
+    await api.put('/states/update', stateInfo);
+  } catch (error) {
+    console.error('Error al actualizar el estado.', error);
     throw error;
   }
 };

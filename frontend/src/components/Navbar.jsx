@@ -17,6 +17,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import PersonIcon from '@mui/icons-material/Person';
 import HomeIcon from '@mui/icons-material/Home';
+import CheckCircle from '@mui/icons-material/CheckCircle';
 
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
@@ -34,7 +35,6 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 const Navbar = () => {
   const { user, logout } = useContext(AuthContext);
   const { cartItems } = useContext(CartContext);
-  console.log(cartItems);
   const navigate = useNavigate();
   const Rol = user?.rol;
 
@@ -82,7 +82,7 @@ const Navbar = () => {
             ) : (
               <>
                 <IconButton color="inherit" component={Link} to="/admin/Home">
-                  <AdminPanelSettingsIcon />
+                <ListAltIcon />
                   <Typography variant="body1" sx={{ marginLeft: 1 }}>
                     Órdenes
                   </Typography>
@@ -99,8 +99,9 @@ const Navbar = () => {
                     Categorías
                   </Typography>
                 </IconButton>
-                <IconButton color="inherit" component={Link} to="/admin/orders">
-                  <ListAltIcon />
+                <IconButton color="inherit" component={Link} to="/admin/states">
+                <CheckCircle/>
+                  
                   <Typography variant="body1" sx={{ marginLeft: 1 }}>
                     Estados
                   </Typography>

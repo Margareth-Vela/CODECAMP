@@ -15,7 +15,6 @@ const AdminHomePage = () => {
         const fetchOrder = async () => {
             try {
                 const data = await fetchOrders();
-                console.log('Datos orders:',data)
                 setOrders(data);
             } catch (error) {
                 console.error('Error fetching orders:', error);

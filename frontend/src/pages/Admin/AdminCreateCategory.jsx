@@ -83,7 +83,6 @@ const AdminCreateCategoryPage = () => {
         }
     });
 
-    console.log('form errors', errors)
     setValue('idUsuarios', user.id);
     setValue('idCategoriaProductos', nextCategoryId);
 
@@ -91,9 +90,9 @@ const AdminCreateCategoryPage = () => {
         try {
             await createCategory(data);
             alert('Categoría creada con éxito');
-            navigate('/admin/categories'); // Redirige a la página de productos 
+            navigate('/admin/categories'); // Redirige a la página de categorias 
         } catch (error) {
-            console.error('Error al crear la categorpia.', error);
+            console.error('Error al crear la categoría.', error);
             alert('Hubo un error al crear la categoría. Por favor, inténtelo de nuevo.');
         }
     };
