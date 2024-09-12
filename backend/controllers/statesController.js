@@ -31,8 +31,7 @@ exports.createEstado = async (req, res) => {
 
 // Ruta para actualizar un estado
 exports.updateEstado = async (req, res) => {
-    const { idEstados } = req.params;
-    const { Nombre } = req.body;
+    const { idEstados, Nombre } = req.body;
 
     try {
         await sequelize.query(`

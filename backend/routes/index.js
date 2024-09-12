@@ -14,12 +14,11 @@ const { authenticateToken, authorizeRole } = require('../config/auth.js');
 router.get('/products', productController.getActiveProducts);
 router.post('/login', userController.loginUser);
 router.post('/users/create', userController.createUser);
-
+router.post('/logout', userController.logoutUser);
 // ***********************************************************************
 //                     ENDPOINTS AUTENTICACION 
 // ***********************************************************************
 router.use(authenticateToken); // Todas las rutas siguientes requieren autenticación
-router.post('/logout', userController.logoutUser);
 // ***********************************************************************
 //                     ENDPOINTS PRODUCTOS
 // ***********************************************************************
@@ -42,7 +41,7 @@ router.put('/CatProducts/update/:idCategoriaProductos', authorizeRole([ROLES.ADM
 // ***********************************************************************
 router.get('/states', authorizeRole([ROLES.ADMIN]), statesController.getAllStates);
 router.post('/states/create', authorizeRole([ROLES.ADMIN]), statesController.createEstado);
-router.put('/states/update/:idEstados', authorizeRole([ROLES.ADMIN]), statesController.updateEstado);
+router.put('/states/update', authorizeRole([ROLES.ADMIN]), statesController.updateEstado);
 
 // ***********************************************************************
 //                     ENDPOINTS USUARIOS
